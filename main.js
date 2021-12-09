@@ -27,6 +27,8 @@ function poNacteni() {
 
     setInterval(animace, 30);
 }
+const HRAC_SIRKA = 10;
+const HRAC_VYSKA = 60;
 let hrac1x = 20;
 let hrac1y = 200;
 const KRUH_POLOMER = 10;
@@ -47,9 +49,9 @@ function animace() {
     }
     ctx.beginPath();
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "green";
-    ctx.rect(hrac1x, hrac1y, 80, 40);
-    ctx.stroke();
+    ctx.fillStyle = "green";
+    ctx.rect(hrac1x, hrac1y, HRAC_SIRKA, HRAC_VYSKA);
+    ctx.fill();
 
     //kruh (plny) - micek
     kruhX = kruhX + kruhRychlostX;
