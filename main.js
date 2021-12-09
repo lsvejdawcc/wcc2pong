@@ -31,6 +31,7 @@ const HRAC_SIRKA = 10;
 const HRAC_VYSKA = 60;
 let hrac1x = 20;
 let hrac1y = 200;
+let hrac1body = 0;
 const KRUH_POLOMER = 10;
 let kruhX = 320;
 let kruhY = 200;
@@ -53,6 +54,9 @@ function animace() {
     ctx.rect(hrac1x, hrac1y, HRAC_SIRKA, HRAC_VYSKA);
     ctx.fill();
 
+    //obdelnik - hrac2
+    //TODO vykresleni a pohyb hrace 2
+
     //kruh (plny) - micek
     kruhX = kruhX + kruhRychlostX;
     kruhY = kruhY + kruhRychlostY;
@@ -61,9 +65,12 @@ function animace() {
     }
     if (kruhX < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostX = -1 * kruhRychlostX;
+        //TODO pocitani bodu
     }
     if (kruhX > cnv.width - KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
-        kruhRychlostX = -1 * kruhRychlostX;
+        kruhRychlostX = -1 * kruhRychlostX; //zatim nechame odrazeni
+        hrac1body = hrac1body + 1;
+        document.getElementById("stav").innerHTML = hrac1body + ":0";
     }
     if (kruhY < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostY = -1 * kruhRychlostY;
