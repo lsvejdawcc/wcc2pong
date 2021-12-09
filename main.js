@@ -56,6 +56,9 @@ function animace() {
     //kruh (plny) - micek
     kruhX = kruhX + kruhRychlostX;
     kruhY = kruhY + kruhRychlostY;
+    if (kruhX <= hrac1x + HRAC_SIRKA + KRUH_POLOMER && kruhY >= hrac1y && kruhY <= hrac1y + HRAC_VYSKA) { 
+        kruhRychlostX = -1 * kruhRychlostX;
+    }
     if (kruhX < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostX = -1 * kruhRychlostX;
     }
