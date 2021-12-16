@@ -2,12 +2,20 @@ let cnv;
 let cnx;
 let hrac1nahoru = false;
 let hrac1dolu = false;
+let hrac2nahoru = false;
+let hrac2dolu = false;
 function stiskKlavesy(udalost) {
     if (udalost.key == "w") {
         hrac1nahoru = true;
     }
     if (udalost.key == "s") {
         hrac1dolu = true;
+    }
+    if (udalost.key == "ArrowUp") {
+        hrac2nahoru = true;
+    }
+    if (udalost.key == "ArrowDown") {
+        hrac2dolu = true;
     }
 }
 function uvolneniKlavesy(udalost) {
@@ -17,6 +25,12 @@ function uvolneniKlavesy(udalost) {
     if (udalost.key == "s") {
         hrac1dolu = false;
     }
+    if (udalost.key == "ArrowUp") {
+        hrac2nahoru = false;
+    }
+    if (udalost.key == "ArrowDown") {
+        hrac2dolu = false;
+    }
 }
 function poNacteni() {
     document.addEventListener("keydown", stiskKlavesy);
@@ -25,13 +39,22 @@ function poNacteni() {
     cnv = document.getElementById("platno");
     ctx = cnv.getContext("2d");
 
+    //nastaveni pozice hracu
+    hrac1x = 20;
+    hrac1y = cnv.height / 2;
+    hrac2x = cnv.width - 20 - HRAC_SIRKA;
+    hrac2y = hrac1y;
+
     setInterval(animace, 30);
 }
 const HRAC_SIRKA = 10;
 const HRAC_VYSKA = 60;
-let hrac1x = 20;
-let hrac1y = 200;
+let hrac1x;
+let hrac1y;
 let hrac1body = 0;
+let hrac2x;
+let hrac2y;
+let hrac2body = 0;
 const KRUH_POLOMER = 10;
 let kruhX = 320;
 let kruhY = 200;
@@ -55,29 +78,50 @@ function animace() {
     ctx.fill();
 
     //obdelnik - hrac2
-    //TODO vykresleni a pohyb hrace 2
+    if (hrac2nahoru) {
+        hrac2y = hrac2y -4;
+    }
+    if (hrac2dolu) {
+        hrac2y = hrac2y +4;
+    }
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "blue";
+    ctx.rect(hrac2x, hrac2y, HRAC_SIRKA, HRAC_VYSKA);
+    ctx.fill();
 
     //kruh (plny) - micek
     kruhX = kruhX + kruhRychlostX;
     kruhY = kruhY + kruhRychlostY;
+    //odrazeni od hrace 1
     if (kruhX <= hrac1x + HRAC_SIRKA + KRUH_POLOMER && kruhY >= hrac1y && kruhY <= hrac1y + HRAC_VYSKA) { 
         kruhRychlostX = -1 * kruhRychlostX;
     }
+    //odrazeni od hrace 2
+    if (kruhX >= hrac2x - KRUH_POLOMER && kruhY >= hrac2y && kruhY <= hrac2y + HRAC_VYSKA) { 
+        kruhRychlostX = -1 * kruhRychlostX;
+    }
+    //bod pro hrace 2
     if (kruhX < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostX = -1 * kruhRychlostX;
-        //TODO pocitani bodu
+        hrac2body = hrac2body + 1;
+        document.getElementById("stav").innerHTML = hrac1body + ":" + hrac2body;
     }
+    //bod pro hrace 1
     if (kruhX > cnv.width - KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostX = -1 * kruhRychlostX; //zatim nechame odrazeni
         hrac1body = hrac1body + 1;
-        document.getElementById("stav").innerHTML = hrac1body + ":0";
+        document.getElementById("stav").innerHTML = hrac1body + ":" + hrac2body;
     }
+    //odrazeni od horni strany
     if (kruhY < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostY = -1 * kruhRychlostY;
     }
+    //odrazeni od dolni strany
     if (kruhY > cnv.height - KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostY = -1 * kruhRychlostY;
     }
+    
     ctx.beginPath();
     ctx.fillStyle = "magenta";
     ctx.arc(kruhX, kruhY, KRUH_POLOMER, 0, 2*Math.PI);
