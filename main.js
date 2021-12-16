@@ -69,8 +69,12 @@ function novyMic() {
     //nastaveni mice
     kruhX = cnv.width / 2;
     kruhY = cnv.height / 2;
-    kruhRychlostX = -5;
-    kruhRychlostY = -1;
+    do {
+        kruhRychlostX = Math.floor(Math.random() * 20) - 10; //nahodne cislo od -10 do +10
+    } while (kruhRychlostX == 0); //rychlost nesmi byt 0
+    do {
+        kruhRychlostY = Math.floor(Math.random() * 20) - 10; //nahodne cislo od -10 do +10
+    } while (kruhRychlostY == 0); //rychlost nesmi byt 0
 }
 function animace() {
     //vycisteni platna
