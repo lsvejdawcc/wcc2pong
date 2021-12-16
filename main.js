@@ -45,6 +45,8 @@ function poNacteni() {
     hrac2x = cnv.width - 20 - HRAC_SIRKA;
     hrac2y = hrac1y;
 
+    novyMic();
+
     setInterval(animace, 30);
 }
 const HRAC_SIRKA = 10;
@@ -56,10 +58,20 @@ let hrac2x;
 let hrac2y;
 let hrac2body = 0;
 const KRUH_POLOMER = 10;
-let kruhX = 320;
-let kruhY = 200;
-let kruhRychlostX = -5;
-let kruhRychlostY = -1;
+let kruhX;
+let kruhY;
+let kruhRychlostX;
+let kruhRychlostY;
+function novyMic() {
+    //zobrazeni stavu
+    document.getElementById("stav").innerHTML = hrac1body + ":" + hrac2body;
+
+    //nastaveni mice
+    kruhX = cnv.width / 2;
+    kruhY = cnv.height / 2;
+    kruhRychlostX = -5;
+    kruhRychlostY = -1;
+}
 function animace() {
     //vycisteni platna
     ctx.clearRect(0,0,cnv.width,cnv.height);
@@ -103,15 +115,13 @@ function animace() {
     }
     //bod pro hrace 2
     if (kruhX < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
-        kruhRychlostX = -1 * kruhRychlostX;
         hrac2body = hrac2body + 1;
-        document.getElementById("stav").innerHTML = hrac1body + ":" + hrac2body;
+        novyMic();
     }
     //bod pro hrace 1
     if (kruhX > cnv.width - KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
-        kruhRychlostX = -1 * kruhRychlostX; //zatim nechame odrazeni
         hrac1body = hrac1body + 1;
-        document.getElementById("stav").innerHTML = hrac1body + ":" + hrac2body;
+        novyMic();
     }
     //odrazeni od horni strany
     if (kruhY < KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
@@ -121,7 +131,7 @@ function animace() {
     if (kruhY > cnv.height - KRUH_POLOMER) { //stred kruhu je v mensi vzdalenosti nez jeho polomer
         kruhRychlostY = -1 * kruhRychlostY;
     }
-    
+
     ctx.beginPath();
     ctx.fillStyle = "magenta";
     ctx.arc(kruhX, kruhY, KRUH_POLOMER, 0, 2*Math.PI);
